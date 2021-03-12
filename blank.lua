@@ -943,6 +943,176 @@ local GUIData = (function()
 	return {gui, saveData, screenGui}
 end)()
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+local RunService = game:GetService("RunService")
+local HttpService = game:GetService("HttpService")
+local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+  local Player = Players.LocalPlayer
+    local Mouse = Player:GetMouse()
+
+local gui = GUIData[1]
+local saveData = GUIData[2]
+local screenGui = GUIData[3]
+
+local screenscale = 250
+local opacity = 1
+local backcolor = Color3.new()
+
+--// Saving
+local readfile = readfile or function() end
+pcall(function()
+	local JSONData = readfile("OpenGui_" .. tostring(game.PlaceId) .. ".txt")
+	if JSONData then
+		local LUAData = HttpService:JSONDecode(JSONData)
+		saveData.Options = LUAData.Options
+		saveData.Hotkeys = LUAData.Hotkeys
+		print("Save Data found")
+	else
+		print("Save Data not found")
+	end
+end)
+
+
+--// UI Creation
+
+--// Render Frame
+local Render = gui:create("Container", {
+	Name = "Render",
+})--|
+	local OpenGui = Render.self:create("Toggle", {
+		Name = "OpenGui",
+		Default = true,
+		Hotkey = tostring(Enum.KeyCode.RightControl),
+		Hint = "The navigation GUI",
+		Callback = function(enabled)
+			for _, frame in pairs(screenGui:GetChildren()) do
+				if frame:IsA("Frame") then
+					frame.Visible = enabled
+				end
+			end
+			screenGui.Modal.Visible = enabled
+			screenGui.Hint.Visible = false
+		end,
+	})--|
+		local Opacity = OpenGui.self:create("Number", {
+			Name = "Opacity",
+			Min = 0,
+			Max = 1,
+			Round = 0.01,
+			Default = 0.75,
+			Hint = "Transparency of the navigation GUI",
+			Callback = function(alpha)
+				opacity = 1 - alpha
+				for _, frame in pairs(screenGui:GetChildren()) do
+					if frame:IsA("Frame") then
+						frame.BackgroundTransparency = 1 - alpha
+						frame.OptionsFrame.BackgroundTransparency = 1 - alpha
+					end
+				end
+			end,
+		})
+		local Width = OpenGui.self:create("Number", {
+			Name = "Width",
+			Min = 200,
+			Max = 300,
+			Round = 1,
+			Default = 250,
+			Hint = "Width of the navigation GUI",
+			Callback = function(scale)
+				screenscale = scale
+				for _, frame in pairs(screenGui:GetChildren()) do
+					if frame:IsA("Frame") then
+						frame.Size = UDim2.new(0, scale, 0, frame.Size.Y.Offset)
+					end
+				end
+			end,
+		})
+		local Color = OpenGui.self:create("Color", {
+			Name = "Background Color",
+			Default = Color3.fromRGB(40, 40, 40),
+			Hint = "Background color of the navigation GUI",
+			Callback = function(color)
+				backcolor = color
+				for _, frame in pairs(screenGui:GetChildren()) do
+					if frame:IsA("Frame") then
+						frame.BackgroundColor3 = color
+						frame.OptionsFrame.BackgroundColor3 = color
+					end
+				end
+			end,
+		})
+
 RunService.RenderStepped:Connect(function()
 	for _, frame in pairs(screenGui:GetChildren()) do
 		if frame:IsA("Frame") then
