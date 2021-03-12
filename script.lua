@@ -933,7 +933,8 @@ local GUIData = (function()
 		end
 	end)
 	
-	Mods.Text = "OpenGui " .. _V
+	Mods.Text = "Game Sense"
+	-- Mods.Text = "OpenGui " .. _V
 	
 	game.Close:Connect(function()
 		Save()
