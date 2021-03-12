@@ -51,7 +51,7 @@ local GUIData = (function()
 	local writefile = writefile or function() end
 	local function Save()
 		local JSONData = HttpService:JSONEncode(saveData)
-		writefile("OpenGui" .. tostring(game.PlaceId) .. ".txt", JSONData)
+		writefile("OpenGui.txt", JSONData)
 	end
 	
 	-- Color Functions
@@ -2430,7 +2430,7 @@ local backcolor = Color3.new()
 --// Saving
 local readfile = readfile or function() end
 pcall(function()
-	local JSONData = readfile("OpenGui" .. tostring(game.PlaceId) .. ".txt")
+	local JSONData = readfile("OpenGui.txt")
 	if JSONData then
 		local LUAData = HttpService:JSONDecode(JSONData)
 		saveData.Options = LUAData.Options
