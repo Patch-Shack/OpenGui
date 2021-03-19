@@ -50,7 +50,7 @@ local GUIData = (function()
 	local writefile = writefile or function() end
 	local function Save()
 		local JSONData = HttpService:JSONEncode(saveData)
-		writefile("OpenGui_" .. tostring(game.PlaceId) .. ".txt", JSONData)
+		writefile("GameSense_" .. tostring(game.PlaceId) .. ".txt", JSONData)
 	end
 	
 	-- Color Functions
@@ -934,7 +934,6 @@ local GUIData = (function()
 	end)
 	
 	Mods.Text = "Game Sense"
-	-- Mods.Text = "OpenGui " .. _V
 	
 	game.Close:Connect(function()
 		Save()
@@ -2430,7 +2429,7 @@ local backcolor = Color3.new()
 --// Saving
 local readfile = readfile or function() end
 pcall(function()
-	local JSONData = readfile("OpenGui_" .. tostring(game.PlaceId) .. ".txt")
+	local JSONData = readfile("GameSense_" .. tostring(game.PlaceId) .. ".txt")
 	if JSONData then
 		local LUAData = HttpService:JSONDecode(JSONData)
 		saveData.Options = LUAData.Options
